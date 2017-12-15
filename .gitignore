@@ -17,6 +17,11 @@ ExportedObj/
 *.pidb
 *.booproj
 *.svd
+# For some reason, VS started adding some files that I really don't want to see
+*.ide
+*.ide-shm
+*.ide-wal
+db.lock
 
 
 # Unity3D generated meta files

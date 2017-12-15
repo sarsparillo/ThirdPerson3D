@@ -4,32 +4,38 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    [Header("Basic stats for movement")]
 	public float speed;
 	public float jumpHeight;
+    public float gravityScale;
 
 	private bool canJump, canMelee, canShoot;
 
-	public Rigidbody rb;
+    public CharacterController controller;
+    private Vector3 moveDirection;
 
 	void Start() {
-		rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
 
 		canJump = true;
 	}
 
 	
 	void Update() {
-		rb.velocity = new Vector3(Input.GetAxis("Horizontal") * speed, rb.velocity.y, Input.GetAxis("Vertical") * speed);
+        moveDirection = new Vector3(Input.GetAxis("Horizontal") * speed, 0f, Input.GetAxis("Vertical") * speed);
 
 		if (Input.GetButtonDown("Jump")) {
 			Jump();
 		}
+
+        moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale);
+        controller.Move(moveDirection * Time.deltaTime);
 	}
 
 	void Jump() {
 		if (canJump) {
-			rb.velocity = new Vector3(rb.velocity.x, jumpHeight, rb.velocity.z);
-		}
+            moveDirection.y = jumpHeight;
+        }
 	}
 
 	void Melee() {
